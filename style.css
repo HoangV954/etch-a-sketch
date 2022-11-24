@@ -42,7 +42,9 @@ p {
     flex-wrap: wrap;
     width: 50vh;
     height: 50vh;
-    border: solid 1px #808080;
+    border: solid 1px #3F88C5;
+    background-color: #d8d8d8;
+    
 }
 
 

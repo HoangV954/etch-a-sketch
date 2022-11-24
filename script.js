@@ -5,7 +5,7 @@ function createBoard() {
     for (let i = 1; i <= 256; i++) {
         const div = document.createElement('div');
         div.classList.add('grid');
-        div.setAttribute('style', 'width: calc(100%/16); height: calc(100%/16); border: solid 1px #808080; background-color: white');
+        div.setAttribute('style', 'width: calc(100%/16); height: calc(100%/16); border: solid 1px #696969; background-color: white');
         container.appendChild(div);
     } 
 }
@@ -18,7 +18,7 @@ createBoard()
 //let randomColor = '#' + (Math.floor(Math.random()*2**24)).toString(16).padStart(6, '0')
 
 let color = '';
-let percent = 100;
+let percent = 150;
 
 
 
@@ -34,14 +34,16 @@ const grids = document.querySelectorAll('.grid');
 
 
 //Do not run this function with extensions that change color props. Also filter: brightness(20%); will make darker color
-grids.forEach((grid) => {   
+
+function colorfulMode() {
+    grids.forEach((grid) => {   
         grid.addEventListener('mouseenter', function coloring() {
             if (percent < 0) {   
                 this.removeEventListener('mouseenter', coloring);    
             }
 
             if (this.style.backgroundColor === 'white') {
-                percent = 100;
+                percent = 150;
                 randomColor()
             } else {
                 percent -= 5;
@@ -51,10 +53,24 @@ grids.forEach((grid) => {
             let dark = 'brightness(' + percent + '%)';               
             this.style.filter = dark;        
         })
-})
+    })
+}
 
+//Set a base number of items, increment with each time mouse hovers over. Utilizing black and white opacity vs rgba: rgba doesn't apply to border (opacity affects the whole element)
 
+function classicMode() {
+    grids.forEach((grid) => {
+        let rgb = '(112, 112, 112,'      
+        grid.count = 0;
+        grid.addEventListener('mouseenter', (e) => {
+            e.target.count += 0.1;
+            let rgba = 'rgba' + rgb + ' ' + e.target.count.toString() +')';
+            e.target.style.backgroundColor = rgba;
+            //e.target.style.opacity = 0.5*e.target.count;   
+        })
+    })    
+}
     
-
+classicMode()
 
 
