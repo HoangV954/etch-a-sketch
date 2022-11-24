@@ -18,6 +18,8 @@ createBoard()
 //let randomColor = '#' + (Math.floor(Math.random()*2**24)).toString(16).padStart(6, '0')
 
 let color = '';
+let percent = 100;
+
 
 
 function randomColor() {
@@ -28,20 +30,31 @@ function randomColor() {
     color = '#' + z1 + x;  
 }
 
-
 const grids = document.querySelectorAll('.grid');
 
-//Do not run this function with extensions that change color props
-    grids.forEach((grid) => {   
-        grid.addEventListener('mouseover', (e) => {
-            randomColor()
-            e.target.style.backgroundColor = color;
-            
-        })      
-    })
+
+//Do not run this function with extensions that change color props. Also filter: brightness(20%); will make darker color
+grids.forEach((grid) => {   
+        grid.addEventListener('mouseenter', function coloring() {
+            if (percent < 0) {   
+                this.removeEventListener('mouseenter', coloring);    
+            }
+
+            if (this.style.backgroundColor === 'white') {
+                percent = 100;
+                randomColor()
+            } else {
+                percent -= 5;
+            }
+
+            this.style.backgroundColor = color;
+            let dark = 'brightness(' + percent + '%)';               
+            this.style.filter = dark;        
+        })
+})
 
 
     
 
-//filter: brightness(20%); will make darker color
+
 
