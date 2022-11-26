@@ -1,6 +1,8 @@
 // Create the game board with certain number of boxes. Need a variable as max (for i <=) and utilize i as a separate variable since not just the width and height need to be changed
 const container = document.querySelector('.container');
 let size;
+let modeR;
+let modeC;
 
 function clear() {
     while (container.hasChildNodes()) {
@@ -20,10 +22,20 @@ function defaultBoard() {
         div.setAttribute('style', `width: calc(100%/16); height: calc(100%/16); border: solid 1px #696969; background-color: white;`);
         container.appendChild(div);
     }
+    classicMode()
+    
 }
 defaultBoard()
 
-
+function colorControl() {
+    if (modeC === 1) {
+        classicMode()
+    } else if (modeR === 1) {
+        colorfulMode()
+    } /* else if (modeC === 0 && modeR === 0) {
+        classicMode()
+    } */
+}
 // Utilize parseInt instead of Number() since Number tries to parse the entire argument as a number (fail when 1 of the character is NaN) while parseInt at least supports edge cases like ('12ab'). 2 methods: isNan and regex to check if user input is a number. regex is preferred since isNaN(parseInt(size)) is bad with white spaces (e.g. '  12' still counts as valid) 
 
 let regex = /^[0-9]+$/
@@ -42,6 +54,8 @@ function createBoard() {
         } 
         
     }
+    colorControl()
+
 }
 
 // Create random color variable. #ffffff is hexadecimal (base 16) compared to (255,255,255) <can't be inject directly into js> (base 10 - decimal). Sometimes the random math will return less than the standard length (e.g.: #00FF00) so it needs to be patched with a string on top of it (or refer to solution 2). Also, the number of colors that can be represented by this system is 16^6 or 256^3 or 2^24 = 16,777,216 (see sol. 2 for more usage of this info). What we learned here is it's good to research the underlying mechanics of the web before solving a logic puzzle.
@@ -95,6 +109,8 @@ function colorfulMode() {
             
         })
     })
+    modeC = 0;
+    modeR = 1;
 }
 
 
@@ -112,7 +128,9 @@ function classicMode() {
             //e.target.style.opacity = 0.5*e.target.count;
                
         }, false)
-    })    
+    })
+    modeC = 1;
+    modeR = 0;    
 }
     
 
